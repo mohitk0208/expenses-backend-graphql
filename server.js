@@ -103,10 +103,14 @@ const schema = new GraphQLSchema({
   mutation: RootMutationType
 })
 
-app.use("/graphql", expressGraphQl.graphqlHTTP({
+// add a middleware to prohibit request that does not have a request.user
+app.use("/graphql", expressGraphQl.graphqlHTTP((req) => ({
   schema: schema,
-  graphiql: true
-}))
+  graphiql: {
+    headerEditorEnabled: true
+  },
+  context: { user: req.user }
+})))
 
 
 
