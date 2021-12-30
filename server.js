@@ -5,6 +5,11 @@ const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const passport = require("passport")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { GraphQLSchema } = require("graphql")
+const expressGraphQl = require("express-graphql")
+
+const RootQueryType = require("./schemas/rootQueryType");
+const RootMutationType = require("./schemas/rootMutationType")
 
 dotenv.config()
 
@@ -91,6 +96,17 @@ app.get("/auth/logout", (req, res) => {
     })
   }
 })
+
+
+const schema = new GraphQLSchema({
+  query: RootQueryType,
+  mutation: RootMutationType
+})
+
+app.use("/graphql", expressGraphQl.graphqlHTTP({
+  schema: schema,
+  graphiql: true
+}))
 
 
 
