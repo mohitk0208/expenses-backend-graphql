@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLInt } = require("graphql")
 
 const MonthType = new GraphQLObjectType({
   name: "Month",
