@@ -10,7 +10,7 @@ const UserType = new GraphQLObjectType({
     firstName: { type: GraphQLNonNull(GraphQLString) },
     photoUrl: { type: GraphQLString },
     createdAt: { type: GraphQLNonNull(GraphQLString) }
-    // implement for the list of categories
+    // TODO implement for the list of categories
     // categories
   })
 })
