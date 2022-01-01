@@ -10,11 +10,7 @@ const CategoryType = new GraphQLObjectType({
     userId: { type: GraphQLNonNull(GraphQLString) },
     user: {
       type: UserType,
-      resolve: async (category) => {
-        const user = await Category.findById(category.id).populate("userId").userId
-
-        return user
-      }
+      resolve: async (category) => await Category.findById(category.id).populate("user").user
     }
   })
 })

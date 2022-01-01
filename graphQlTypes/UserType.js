@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } = require("graphql")
 const User = require("../models/user")
 
 const UserType = new GraphQLObjectType({
@@ -9,10 +9,20 @@ const UserType = new GraphQLObjectType({
     googleId: { type: GraphQLNonNull(GraphQLString) },
     firstName: { type: GraphQLNonNull(GraphQLString) },
     photoUrl: { type: GraphQLString },
-    createdAt: { type: GraphQLNonNull(GraphQLString) }
-    // TODO implement for the list of categories
-    // categories
+    createdAt: { type: GraphQLNonNull(GraphQLString) },
+    categories: {
+      type: GraphQLList(CategoryType),
+      resolve: async (user) => {
+        const u = await User.findById(user.id).populate("categories")
+
+        return u.categories;
+      }
+    }
   })
 })
 
 module.exports = UserType
+
+// ***************************************************
+
+const CategoryType = require("./CategoryType")

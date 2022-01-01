@@ -1,4 +1,6 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLInt } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLList } = require("graphql")
+
+const Month = require("../models/Month")
 
 const MonthType = new GraphQLObjectType({
   name: "Month",
@@ -6,6 +8,22 @@ const MonthType = new GraphQLObjectType({
   fields: () => ({
     monthName: { type: GraphQLNonNull(GraphQLString) },
     year: { type: GraphQLNonNull(GraphQLInt) },
+    budgetPlan: {
+      type: BudgetPlanType,
+      resolve: async (month) => {
+        const m = await Month.findById(month.id).populate("budgetPlan")
+
+        return m.budgetPlan;
+      }
+    },
+    expenses: {
+      type: GraphQLList(ExpenseType),
+      resolve: async (month) => {
+        const m = await Month.findById(month.id).populate("expenses")
+
+        return m.expenses;
+      }
+    }
     /**
      * TODO
      * budgetPlan
@@ -16,3 +34,8 @@ const MonthType = new GraphQLObjectType({
 })
 
 module.exports = MonthType
+
+// *****************************************************
+
+const BudgetPlanType = require("./BudgetPlanType");
+const ExpenseType = require("./ExpenseType");
