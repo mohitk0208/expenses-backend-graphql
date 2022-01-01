@@ -18,18 +18,12 @@ const MonthType = new GraphQLObjectType({
     },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (month) => {
-        const m = await Month.findById(month.id).populate("expenses")
-
-        return m.expenses;
-      }
+      resolve: async (month) => await Month.findById(month.id).populate("expenses").expenses
+    },
+    user: {
+      type: UserType,
+      resolve: async (month) => await Month.findById(month.id).populate("user").user
     }
-    /**
-     * TODO
-     * budgetPlan
-     * expenses
-     *
-     */
   })
 })
 
@@ -39,3 +33,4 @@ module.exports = MonthType
 
 const BudgetPlanType = require("./BudgetPlanType");
 const ExpenseType = require("./ExpenseType");
+const UserType = require("./UserType");
