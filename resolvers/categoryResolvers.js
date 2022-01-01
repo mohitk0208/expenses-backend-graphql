@@ -1,5 +1,4 @@
 const Category = require("../models/category")
-const User = require("../models/user")
 
 const category = async (parent, args, context) => {
 
@@ -23,7 +22,7 @@ const categories = async (parent, args, context) => {
   const { user } = context
 
   if (user) {
-    return await User.findById(user.id).populate("categories")
+    return await Category.find({ user: user.id })
   }
 
 }

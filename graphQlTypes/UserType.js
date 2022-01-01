@@ -1,5 +1,8 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } = require("graphql")
+
 const User = require("../models/user")
+const Category = require("../models/category")
+const BudgetPlan = require("../models/budgetPlan")
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -12,15 +15,11 @@ const UserType = new GraphQLObjectType({
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     categories: {
       type: GraphQLList(CategoryType),
-      resolve: async (user) => {
-        const u = await User.findById(user.id).populate("categories")
-
-        return u.categories;
-      }
+      resolve: async (user) => await Category.find({ user: user.id })
     },
     budgetPlans: {
       type: GraphQLList(BudgetPlanType),
-      resolve: async (user) => await User.findById(user.id).populate("budgetPlans").budgetPlans
+      resolve: async (user) => await BudgetPlan.find({ user: user.id })
     }
   })
 })

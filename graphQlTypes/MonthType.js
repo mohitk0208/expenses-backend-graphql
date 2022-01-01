@@ -1,6 +1,9 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLList } = require("graphql")
 
 const Month = require("../models/Month")
+const BudgetPlan = require("../models/budgetPlan")
+const User = require("../models/user")
+const Expense = require("../models/expense")
 
 const MonthType = new GraphQLObjectType({
   name: "Month",
@@ -10,19 +13,15 @@ const MonthType = new GraphQLObjectType({
     year: { type: GraphQLNonNull(GraphQLInt) },
     budgetPlan: {
       type: BudgetPlanType,
-      resolve: async (month) => {
-        const m = await Month.findById(month.id).populate("budgetPlan")
-
-        return m.budgetPlan;
-      }
+      resolve: async (month) => await BudgetPlan.findById(month.budgetPlan)
     },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (month) => await Month.findById(month.id).populate("expenses").expenses
+      resolve: async (month) => await Expense.find({month: month.id})
     },
     user: {
       type: UserType,
-      resolve: async (month) => await Month.findById(month.id).populate("user").user
+      resolve: async (month) => await User.findById(month.user)
     }
   })
 })

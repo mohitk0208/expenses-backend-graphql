@@ -1,6 +1,9 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat } = require("graphql")
 
 const Expense = require("../models/expense")
+const Category = require("../models/category")
+const Month = require("../models/Month")
+const User = require("../models/user")
 
 const ExpenseType = new GraphQLObjectType({
   name: "Expense",
@@ -11,15 +14,15 @@ const ExpenseType = new GraphQLObjectType({
     amount: { type: GraphQLNonNull(GraphQLFloat) },
     category: {
       type: CategoryType,
-      resolve: async (expense) => await Expense.findById(expense.id).populate("category").category
+      resolve: async (expense) => await Category.findById(expense.category)
     },
     month: {
       type: MonthType,
-      resolve: async (expense) => await Expense.findById(expense.id).populate("month").month
+      resolve: async (expense) => await Month.findById(expense.month)
     },
     user: {
       type: UserType,
-      resolve: async (expense) => await Expense.findById(expense.id).populate("user").user
+      resolve: async (expense) => await User.findById(expense.user)
     }
   })
 })

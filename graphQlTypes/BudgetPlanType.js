@@ -1,6 +1,6 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat } = require("graphql")
 
-const BudgetPlan = require("../models/budgetPlan")
+const User = require("../models/user")
 
 const BudgetPlanType = new GraphQLObjectType({
   name: "BudgetPlan",
@@ -11,7 +11,7 @@ const BudgetPlanType = new GraphQLObjectType({
     monthBudget: { type: GraphQLNonNull(GraphQLFloat) },
     user: {
       type: UserType,
-      resolve: async (budgetPlan) => await BudgetPlan.findById(budgetPlan.id).populate("user").user
+      resolve: async (budgetPlan) => await User.findById(budgetPlan.user)
     }
   })
 })

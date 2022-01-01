@@ -1,5 +1,7 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString } = require("graphql")
+
 const Category = require("../models/category")
+const User = require("../models/user")
 
 const CategoryType = new GraphQLObjectType({
   name: "Category",
@@ -10,7 +12,7 @@ const CategoryType = new GraphQLObjectType({
     userId: { type: GraphQLNonNull(GraphQLString) },
     user: {
       type: UserType,
-      resolve: async (category) => await Category.findById(category.id).populate("user").user
+      resolve: async (category) => await User.findById(category.user)
     }
   })
 })
