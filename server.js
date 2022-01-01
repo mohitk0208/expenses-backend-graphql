@@ -11,6 +11,8 @@ const expressGraphQl = require("express-graphql")
 const RootQueryType = require("./schemas/rootQueryType");
 const RootMutationType = require("./schemas/rootMutationType")
 
+const User = require("./models/user")
+
 dotenv.config()
 
 const app = express()
@@ -38,12 +40,14 @@ app.use(passport.session())
 
 passport.serializeUser((user, done) => {
   // serialize the user id and not complete user object
-  return done(null, user)
+  return done(null, user._id)
 })
 
-passport.deserializeUser((user, done) => {
+passport.deserializeUser((id, done) => {
   // get the user from the received id and return the user
-  return done(null, user)
+  User.findById(id, (err, doc) => {
+    return done(null, doc)
+  })
 })
 
 passport.use(new GoogleStrategy({
@@ -58,7 +62,26 @@ passport.use(new GoogleStrategy({
     // else
     // create a user in the database and then return the created user
     console.log(profile)
-    cb(null, profile)
+    User.findOne({ googleId: profile.id }, async (err, doc) => {
+      if (err) {
+        return cb(err, null)
+      }
+
+      if (!doc) {
+        const newUser = new User({
+          googleId: profile.id,
+          firstName: profile.name.givenName,
+          lastName: (profile.name.middleName || "") + (profile.name.familyName || ""),
+          photoUrl: profile._json.picture || null
+        })
+
+        await newUser.save()
+        cb(null, newUser)
+      }else {
+        cb(null, doc)
+      }
+
+    })
   }
 ));
 

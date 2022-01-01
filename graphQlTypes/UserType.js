@@ -11,6 +11,7 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     googleId: { type: GraphQLNonNull(GraphQLString) },
     firstName: { type: GraphQLNonNull(GraphQLString) },
+    lastName: {type: GraphQLString},
     photoUrl: { type: GraphQLString },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     categories: {

@@ -14,7 +14,7 @@ const RootQueryType = new GraphQLObjectType({
       type: UserType,
       description: "a single user",
       args: {
-        id: { type: GraphQLNonNull(GraphQLString) }
+        // id: { type: GraphQLNonNull(GraphQLString) }
       },
       resolve: userResolvers.user
     },
