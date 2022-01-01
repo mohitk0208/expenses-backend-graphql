@@ -6,8 +6,9 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String },
   photoUrl: { type: String },
-  createdAt: {type: mongoose.Schema.Types.Date, default: Date.now()},
-  categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }]
+  createdAt: { type: mongoose.Schema.Types.Date, default: Date.now() },
+  categories: [{ type: mongoose.Types.ObjectId, ref: "Category" }],
+  budgetPlans: [{ type: mongoose.Types.ObjectId, ref: "BudgetPlan" }]
 })
 
 userSchema.plugin(uniqueValidator);

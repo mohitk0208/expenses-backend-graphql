@@ -17,6 +17,10 @@ const UserType = new GraphQLObjectType({
 
         return u.categories;
       }
+    },
+    budgetPlans: {
+      type: GraphQLList(BudgetPlanType),
+      resolve: async (user) => await User.findById(user.id).populate("budgetPlans").budgetPlans
     }
   })
 })
@@ -26,3 +30,4 @@ module.exports = UserType
 // ***************************************************
 
 const CategoryType = require("./CategoryType")
+const BudgetPlanType = require("./BudgetPlanType")
