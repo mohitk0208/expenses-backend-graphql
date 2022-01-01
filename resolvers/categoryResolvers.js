@@ -1,4 +1,5 @@
 const Category = require("../models/category")
+const User = require("../models/user")
 
 const category = async (parent, args, context) => {
 
@@ -18,5 +19,15 @@ const category = async (parent, args, context) => {
   return
 }
 
+const categories = async (parent, args, context) => {
+  const { user } = context
+
+  if (user) {
+    return await User.findById(user.id).populate("categories")
+  }
+
+}
+
 
 exports.category = category
+exports.categories = categories
