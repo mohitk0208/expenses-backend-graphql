@@ -1,7 +1,7 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } = require("graphql")
 
-const Category = require("../models/category")
 const User = require("../models/user")
+const Expense = require("../models/expense")
 
 const CategoryType = new GraphQLObjectType({
   name: "Category",
@@ -13,10 +13,17 @@ const CategoryType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve: async (category) => await User.findById(category.user)
+    },
+    expenses: {
+      type: GraphQLList(ExpenseType),
+      resolve: async (category) => await Expense.find({ category: category.id })
     }
+
   })
 })
 
 module.exports = CategoryType
 
 const UserType = require("../graphQlTypes/UserType")
+const ExpenseType = require("./ExpenseType");
+
