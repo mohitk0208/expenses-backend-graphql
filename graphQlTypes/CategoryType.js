@@ -8,8 +8,8 @@ const CategoryType = new GraphQLObjectType({
   description: "Category object that can store expenses.",
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLString) },
+    name: {type: GraphQLNonNull(GraphQLString)},
     backgroundUrl: { type: GraphQLString },
-    userId: { type: GraphQLNonNull(GraphQLString) },
     user: {
       type: UserType,
       resolve: async (category) => await User.findById(category.user)

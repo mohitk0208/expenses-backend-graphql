@@ -123,7 +123,7 @@ app.get("/auth/logout", (req, res) => {
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  // mutation: RootMutationType
+  mutation: RootMutationType
 })
 
 // add a middleware to prohibit request that does not have a request.user
