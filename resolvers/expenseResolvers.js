@@ -7,4 +7,7 @@ const expense = async (parent, args, context) => {
   return e
 }
 
+const expenses = async (parent, args, context) => await Expense.find({ user: context.user.id })
+
 exports.expense = expense
+exports.expenses = expenses

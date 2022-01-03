@@ -66,6 +66,11 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLString) }
       },
       resolve: expenseResolvers.expense
+    },
+    expenses: {
+      type: GraphQLList(ExpenseType),
+      description: "list of all the expenses of the user.",
+      resolve: expenseResolvers.expenses
     }
   })
 })
