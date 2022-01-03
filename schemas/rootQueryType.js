@@ -54,6 +54,11 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: monthResolvers.month
     },
+    months: {
+      type: GraphQLList(MonthType),
+      description: "a list of all the months of the user.",
+      resolve: monthResolvers.months
+    },
     expense: {
       type: ExpenseType,
       description: "a single expense object",
