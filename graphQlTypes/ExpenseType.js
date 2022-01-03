@@ -12,6 +12,7 @@ const ExpenseType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     date: { type: GraphQLNonNull(GraphQLString) },
     amount: { type: GraphQLNonNull(GraphQLFloat) },
+    spentOn: {type: GraphQLString},
     category: {
       type: CategoryType,
       resolve: async (expense) => await Category.findById(expense.category)
