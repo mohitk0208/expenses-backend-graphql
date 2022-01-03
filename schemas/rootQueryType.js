@@ -41,7 +41,7 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: budgetPlanResolvers.budgetPlan
     },
-    budgetPLans: {
+    budgetPlans: {
       type: GraphQLList(BudgetPlanType),
       description: "a list of all the budget plans of the request sending user.",
       resolve: budgetPlanResolvers.budgetPlans
