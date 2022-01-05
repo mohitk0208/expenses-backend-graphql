@@ -1,12 +1,22 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat } = require("graphql")
 
+const userResolvers = require("../resolvers/userResolvers")
 const categoryResolvers = require("../resolvers/categoryResolvers")
 const budgetPlanResolvers = require("../resolvers/budgetPlanResolvers")
+const expenseResolvers = require("../resolvers/expenseResolvers")
 
 const RootMutationType = new GraphQLObjectType({
   name: "mutation",
   description: "root mutation",
   fields: () => ({
+    updateUser: {
+      type: UserType,
+      description: "update user profile.",
+      args: {
+        currentBudgetPlan: { type: GraphQLString }
+      },
+      resolve: userResolvers.updateUser
+    },
     addCategory: {
       type: CategoryType,
       description: "add a new category for the user sending the request.",
@@ -20,10 +30,21 @@ const RootMutationType = new GraphQLObjectType({
       type: BudgetPlanType,
       description: "add a new Budget Plan for the user sending the request.",
       args: {
-        perDayAmount: {type: GraphQLNonNull(GraphQLFloat)},
-        monthBudget: {type: GraphQLNonNull(GraphQLFloat)}
+        perDayAmount: { type: GraphQLNonNull(GraphQLFloat) },
+        monthBudget: { type: GraphQLNonNull(GraphQLFloat) }
       },
       resolve: budgetPlanResolvers.addBudgetPlan
+    },
+    addExpense: {
+      type: ExpenseType,
+      description: "add a new expense",
+      args: {
+        date: { type: GraphQLNonNull(GraphQLString) },
+        amount: { type: GraphQLNonNull(GraphQLFloat) },
+        spentOn: { type: GraphQLString },
+        category: { type: GraphQLNonNull(GraphQLString) }
+      },
+      // resolve:
     }
   })
 })
@@ -33,4 +54,9 @@ module.exports = RootMutationType
 // *****************************************************
 
 const CategoryType = require("../graphQlTypes/CategoryType")
-const BudgetPlanType = require("../graphQlTypes/BudgetPlanType")
+const BudgetPlanType = require("../graphQlTypes/BudgetPlanType");
+const ExpenseType = require("../graphQlTypes/ExpenseType")
+const MonthType = require("../graphQlTypes/MonthType")
+const category = require("../models/category")
+const UserType = require("../graphQlTypes/UserType")
+
