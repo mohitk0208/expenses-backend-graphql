@@ -35,6 +35,16 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: budgetPlanResolvers.addBudgetPlan
     },
+    updateBudgetPlan: {
+      type: BudgetPlanType,
+      description: "change the monthBudget and perDayAmount of a budget plan.",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLString) },
+        perDayAmount: { type: GraphQLFloat },
+        monthBudget: { type: GraphQLFloat }
+      },
+      resolve: budgetPlanResolvers.updateBudgetPlan
+    },
     addExpense: {
       type: ExpenseType,
       description: "add a new expense",
