@@ -11,7 +11,7 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     googleId: { type: GraphQLNonNull(GraphQLString) },
     firstName: { type: GraphQLNonNull(GraphQLString) },
-    lastName: {type: GraphQLString},
+    lastName: { type: GraphQLString },
     photoUrl: { type: GraphQLString },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     categories: {
@@ -21,6 +21,13 @@ const UserType = new GraphQLObjectType({
     budgetPlans: {
       type: GraphQLList(BudgetPlanType),
       resolve: async (user) => await BudgetPlan.find({ user: user.id })
+    },
+    currentBudgetPlan: {
+      type: BudgetPlan,
+      resolve: async (user) => await BudgetPlan.findOne({
+        currentBudgetPlan: user.currentBudgetPlan,
+        user: user.id
+      })
     }
   })
 })
@@ -30,4 +37,5 @@ module.exports = UserType
 // ***************************************************
 
 const CategoryType = require("./CategoryType")
-const BudgetPlanType = require("./BudgetPlanType")
+const BudgetPlanType = require("./BudgetPlanType");
+
