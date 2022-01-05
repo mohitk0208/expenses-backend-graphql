@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const monthSchema = new mongoose.Schema({
-  monthName: { type: String, required: true },
+  monthNum: { type: Number, required: true },
   year: { type: Number, required: true },
   user: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   budgetPlan: { type: mongoose.Types.ObjectId, required: true, ref: "BudgetPlan" },

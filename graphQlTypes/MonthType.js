@@ -9,7 +9,7 @@ const MonthType = new GraphQLObjectType({
   name: "Month",
   description: "a month specific global data store to store month related constants and data.",
   fields: () => ({
-    monthName: { type: GraphQLNonNull(GraphQLString) },
+    monthNum: { type: GraphQLNonNull(GraphQLInt) },
     year: { type: GraphQLNonNull(GraphQLInt) },
     budgetPlan: {
       type: BudgetPlanType,
