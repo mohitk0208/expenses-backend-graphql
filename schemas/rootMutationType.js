@@ -66,7 +66,5 @@ module.exports = RootMutationType
 const CategoryType = require("../graphQlTypes/CategoryType")
 const BudgetPlanType = require("../graphQlTypes/BudgetPlanType");
 const ExpenseType = require("../graphQlTypes/ExpenseType")
-const MonthType = require("../graphQlTypes/MonthType")
-const category = require("../models/category")
 const UserType = require("../graphQlTypes/UserType")
 
