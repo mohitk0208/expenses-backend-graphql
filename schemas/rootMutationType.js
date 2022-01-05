@@ -44,7 +44,7 @@ const RootMutationType = new GraphQLObjectType({
         spentOn: { type: GraphQLString },
         category: { type: GraphQLNonNull(GraphQLString) }
       },
-      // resolve:
+      resolve: expenseResolvers.addExpense
     }
   })
 })
