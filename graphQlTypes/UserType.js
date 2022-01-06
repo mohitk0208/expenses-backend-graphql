@@ -23,7 +23,7 @@ const UserType = new GraphQLObjectType({
       resolve: async (user) => await BudgetPlan.find({ user: user.id })
     },
     currentBudgetPlan: {
-      type: BudgetPlan,
+      type: BudgetPlanType,
       resolve: async (user) => await BudgetPlan.findOne({
         currentBudgetPlan: user.currentBudgetPlan,
         user: user.id
