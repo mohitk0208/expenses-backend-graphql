@@ -7,17 +7,10 @@ const Month = require("../models/Month")
 
 
 
-const expense = async (parent, args, context) => {
-  const e = await Expense.findById(args.id)
-
-  // validate with user
-  return e
-}
-
+const expense = async (parent, args, context) => await Expense.findOne({ id: args.id, user: context.user.id })
 
 
 const expenses = async (parent, args, context) => await Expense.find({ user: context.user.id })
-
 
 
 const addExpense = async (parent, args, context) => {
@@ -31,8 +24,10 @@ const addExpense = async (parent, args, context) => {
 
   const resolvedDate = new Date(args.date)
 
-  let month;
-  month = await Month.findOne({
+  const sess = await mongoose.startSession()
+  sess.startTransaction()
+
+  let month = await Month.findOne({
     user: user.id,
     monthNum: resolvedDate.getMonth(),
     year: resolvedDate.getFullYear()
@@ -44,11 +39,12 @@ const addExpense = async (parent, args, context) => {
       // raise error
     }
 
-    month = await Month({
+    month = new Month({
       monthNum: resolvedDate.getMonth(),
       year: resolvedDate.getFullYear(),
       budgetPlan: user.currentBudgetPlan
     })
+    await month.save({ session: sess })
   }
 
   const newExpense = new Expense({
@@ -60,14 +56,11 @@ const addExpense = async (parent, args, context) => {
     user: user,
   })
 
-  const sess = await mongoose.startSession()
-  sess.startTransaction()
+
   await newExpense.save({ session: sess })
-  category.expenses.push(newExpense)
-  await category.save({ session: sess })
-  month.expenses.push(newExpense)
-  await month.save({ session: sess })
   await sess.commitTransaction()
+
+  return newExpense
 }
 
 

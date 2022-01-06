@@ -21,14 +21,10 @@ const category = async (parent, args, context) => {
   return
 }
 
-const categories = async (parent, args, context) => {
-  const { user } = context
 
-  if (user) {
-    return await Category.find({ user: user.id })
-  }
+const categories = async (parent, args, context) => await Category.find({user: context.user.id})
 
-}
+
 
 const addCategory = async (parent, args, context) => {
 
@@ -38,22 +34,19 @@ const addCategory = async (parent, args, context) => {
     name: args.name,
     backgroundUrl: args.backgroundUrl,
     user: user,
-    expenses: [],
   })
 
-  const sess = await mongoose.startSession();
-  sess.startTransaction()
-  await newCategory.save({ session: sess });
-  user.categories.push(newCategory);
-  await user.save({ session: sess });
-  await sess.commitTransaction()
+  await newCategory.save()
 
   return newCategory;
 }
 
+
+
+
 const updateCategory = async (parent, args, context) => {
 
-  const category = await Category.findOne({ id: args.id, user: context.user.id })
+  let category = await Category.findOne({ id: args.id, user: context.user.id })
 
   if (!category) {
     // TODO

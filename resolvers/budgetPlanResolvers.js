@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const BudgetPlan = require("../models/budgetPlan")
+const user = require("../models/user")
 const User = require("../models/user")
 
 
@@ -12,18 +13,8 @@ const budgetPlan = async (parent, args, context) => {
 }
 
 
-const budgetPlans = async (parent, args, context) => {
 
-  const { user } = context
-
-  if (user) {
-    const b = await BudgetPlan.find({ user: user.id })
-
-    return b
-  }
-
-  return
-}
+const budgetPlans = async (parent, args, context) => await BudgetPlan.find({ user: context.user.id })
 
 
 const addBudgetPlan = async (parent, args, context) => {
@@ -35,12 +26,7 @@ const addBudgetPlan = async (parent, args, context) => {
     user: user
   })
 
-  const sess = await mongoose.startSession()
-  sess.startTransaction()
-  await newBudgetPlan.save({ session: sess })
-  user.budgetPlans.push(newBudgetPlan)
-  await user.save({ session: sess })
-  await sess.commitTransaction()
+  await newBudgetPlan.save()
 
   return newBudgetPlan;
 }
@@ -62,7 +48,6 @@ const updateBudgetPlan = async (parent, args, context) => {
   await budgetPlan.save()
 
   return budgetPlan
-
 }
 
 
