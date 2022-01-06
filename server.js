@@ -136,7 +136,6 @@ app.use("/graphql", expressGraphQl.graphqlHTTP((req) => ({
 })))
 
 
-
 const PORT = process.env.PORT || 4000
 mongoose
   .connect(`${process.env.START_MONGODB}${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}${process.env.END_MONGODB}`, {}
