@@ -64,34 +64,58 @@ const addExpense = async (parent, args, context) => {
 }
 
 
-// const updateExpense = async (parent, args, context) => {
+const updateExpense = async (parent, args, context) => {
 
-//   let expense = await Expense.findOne({ id: args.id, user: context.user.id })
+  const user = await User.findById(context.user.id)
 
-//   const sess = await mongoose.startSession()
-//   sess.startTransaction()
+  let expense = await Expense.findOne({ id: args.id, user: context.user.id })
 
-//   if (args.date) {
-//     const resolvedDate = new Date(args.date)
+  const sess = await mongoose.startSession()
+  sess.startTransaction()
 
-//     if (expense.monthNum !== resolvedDate.getMonth() || expense.year !== resolvedDate.getFullYear()) {
+  if (args.date) {
+    const resolvedDate = new Date(args.date)
 
-//       const oldMonth = await Month.findById(expense.month)
+    if (expense.monthNum !== resolvedDate.getMonth() || expense.year !== resolvedDate.getFullYear()) {
 
-//       oldMonth.expenses.pull()
+      const newMonth = await Month.findOne({
+        monthNum: resolvedDate.getMonth(),
+        year: resolvedDate.getFullYear()
+      })
 
+      if (newMonth) {
+        expense.month = newMonth
+      }
+      else {
+        const m = new Month({
+          monthNum: resolvedDate.getMonth(),
+          year: resolvedDate.getFullYear(),
+          budgetPlan: user.currentBudgetPlan
+        })
 
-//     }
+        await m.save({ session: sess })
+        expense.month = m
+      }
+    }
+  }
 
+  if (args.amount) {
+    expense.amount = args.amount
+  }
 
+  if (args.spentOn) {
+    expense.spentOn = args.spentOn
+  }
 
-//   }
+  await expense.save({ session: sess })
+  await sess.commitTransaction()
 
-
-// }
+  return expense
+}
 
 
 
 exports.expense = expense
 exports.expenses = expenses
 exports.addExpense = addExpense
+exports.updateExpense = updateExpense

@@ -5,6 +5,8 @@ const categoryResolvers = require("../resolvers/categoryResolvers")
 const budgetPlanResolvers = require("../resolvers/budgetPlanResolvers")
 const expenseResolvers = require("../resolvers/expenseResolvers")
 
+
+
 const RootMutationType = new GraphQLObjectType({
   name: "mutation",
   description: "root mutation",
@@ -78,7 +80,7 @@ const RootMutationType = new GraphQLObjectType({
         // TODO
         // add functionality to change category
       },
-      // resolve:
+      resolve: expenseResolvers.updateExpense
     }
     // deleteExpense: {}
   })
