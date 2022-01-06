@@ -1,6 +1,5 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLInt, GraphQLList } = require("graphql")
 
-const Month = require("../models/Month")
 const BudgetPlan = require("../models/budgetPlan")
 const User = require("../models/user")
 const Expense = require("../models/expense")
@@ -9,6 +8,7 @@ const MonthType = new GraphQLObjectType({
   name: "Month",
   description: "a month specific global data store to store month related constants and data.",
   fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLString) },
     monthNum: { type: GraphQLNonNull(GraphQLInt) },
     year: { type: GraphQLNonNull(GraphQLInt) },
     budgetPlan: {
@@ -17,7 +17,7 @@ const MonthType = new GraphQLObjectType({
     },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (month) => await Expense.find({month: month.id})
+      resolve: async (month) => await Expense.find({ month: month.id })
     },
     user: {
       type: UserType,
