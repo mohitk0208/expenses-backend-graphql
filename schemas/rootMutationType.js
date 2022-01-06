@@ -26,6 +26,16 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: categoryResolvers.addCategory
     },
+    updateCategory: {
+      type: CategoryType,
+      description: "update details of a category",
+      args: {
+        id: {type: GraphQLNonNull(GraphQLString)},
+        name: {type: GraphQLString},
+        backgroundUrl: {type: GraphQLString}
+      },
+      resolve: categoryResolvers.updateCategory
+    },
     addBudgetPlan: {
       type: BudgetPlanType,
       description: "add a new Budget Plan for the user sending the request.",
@@ -45,6 +55,7 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: budgetPlanResolvers.updateBudgetPlan
     },
+    // deleteBudgetPlan
     addExpense: {
       type: ExpenseType,
       description: "add a new expense",
@@ -55,7 +66,9 @@ const RootMutationType = new GraphQLObjectType({
         category: { type: GraphQLNonNull(GraphQLString) }
       },
       resolve: expenseResolvers.addExpense
-    }
+    },
+    // updateExpense: {}
+    // deleteExpense: {}
   })
 })
 
