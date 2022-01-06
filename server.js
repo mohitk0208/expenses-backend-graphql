@@ -20,18 +20,18 @@ const app = express()
 app.use(express.json())
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 app.use(
   session({
     secret: process.env.EXPRESS_SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-    // cookie: {
-    //   sameSite: "none",
-    //   secure: true,
-    //   maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
-    // }
+    cookie: {
+      sameSite: "none",
+      secure: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+    }
   })
 )
 
