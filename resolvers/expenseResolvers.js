@@ -71,6 +71,33 @@ const addExpense = async (parent, args, context) => {
 }
 
 
+// const updateExpense = async (parent, args, context) => {
+
+//   let expense = await Expense.findOne({ id: args.id, user: context.user.id })
+
+//   const sess = await mongoose.startSession()
+//   sess.startTransaction()
+
+//   if (args.date) {
+//     const resolvedDate = new Date(args.date)
+
+//     if (expense.monthNum !== resolvedDate.getMonth() || expense.year !== resolvedDate.getFullYear()) {
+
+//       const oldMonth = await Month.findById(expense.month)
+
+//       oldMonth.expenses.pull()
+
+
+//     }
+
+
+
+//   }
+
+
+// }
+
+
 
 exports.expense = expense
 exports.expenses = expenses
