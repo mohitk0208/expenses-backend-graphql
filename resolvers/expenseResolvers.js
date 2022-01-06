@@ -42,7 +42,8 @@ const addExpense = async (parent, args, context) => {
     month = new Month({
       monthNum: resolvedDate.getMonth(),
       year: resolvedDate.getFullYear(),
-      budgetPlan: user.currentBudgetPlan
+      budgetPlan: user.currentBudgetPlan,
+      user: user
     })
     await month.save({ session: sess })
   }
