@@ -1,5 +1,3 @@
-const mongoose = require("mongoose")
-
 const Category = require("../models/category")
 const User = require("../models/user")
 
@@ -17,7 +15,8 @@ const addCategory = async (parent, args, context) => {
   const newCategory = new Category({
     name: args.name,
     backgroundUrl: args.backgroundUrl,
-    user: user,
+    description: args.description,
+    userId: user,
   })
 
   await newCategory.save()
@@ -30,7 +29,7 @@ const addCategory = async (parent, args, context) => {
 
 const updateCategory = async (parent, args, context) => {
 
-  let category = await Category.findOne({ id: args.id, user: context.user.id })
+  let category = await Category.findOne({ id: args.id, userId: context.user.id })
 
   if (!category) {
     // TODO
@@ -39,6 +38,7 @@ const updateCategory = async (parent, args, context) => {
 
   if (args.name) category.name = args.name
   if (args.backgroundUrl) category.backgroundUrl = args.backgroundUrl
+  if (args.description) category.description = args.description
 
   await category.save()
 

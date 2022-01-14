@@ -16,9 +16,9 @@ const addBudgetPlan = async (parent, args, context) => {
   const user = await User.findById(context.user.id)
 
   const newBudgetPlan = new BudgetPlan({
+    perMonthAmount: args.perMonthAmount,
     perDayAmount: args.perDayAmount,
-    monthBudget: args.monthBudget,
-    user: user
+    userId: user
   })
 
   await newBudgetPlan.save()
@@ -29,7 +29,7 @@ const addBudgetPlan = async (parent, args, context) => {
 
 const updateBudgetPlan = async (parent, args, context) => {
 
-  const budgetPlan = await BudgetPlan.findOne({ id: args.id, user: context.user.id })
+  const budgetPlan = await BudgetPlan.findOne({ id: args.id, userId: context.user.id })
 
   if (!budgetPlan) {
     // TODO
@@ -37,8 +37,8 @@ const updateBudgetPlan = async (parent, args, context) => {
     // that no budget plan with the given id found
   }
 
+  if (args.monthBudget) budgetPlan.perMonthAmount = args.perMonthAmount
   if (args.perDayAmount) budgetPlan.perDayAmount = args.perDayAmount
-  if (args.monthBudget) budgetPlan.monthBudget = args.monthBudget
 
   await budgetPlan.save()
 

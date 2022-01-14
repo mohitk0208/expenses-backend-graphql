@@ -8,9 +8,9 @@ const user = async (parent, args, context) => {
 const updateUser = async (parent, args, context) => {
   const user = await User.findById(context.user.id)
 
-  const newCurrentBudgetPlan = await BudgetPlan.findOne({ user: user.id, id: args.currentBudgetPlan })
+  const newCurrentBudgetPlan = await BudgetPlan.findOne({ userId: user.id, id: args.newCurrentBudgetPlanId })
 
-  user.currentBudgetPlan = newCurrentBudgetPlan
+  user.currentBudgetPlanId = newCurrentBudgetPlan
   await user.save()
 
   return user

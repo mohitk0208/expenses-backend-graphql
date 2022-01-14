@@ -16,19 +16,19 @@ const expenses = async (parent, args, context) => await Expense.find({ userId: c
 const addExpense = async (parent, args, context) => {
   const user = await User.findById(context.user.id)
 
-  const category = await Category.findOne({ id: args.category, user: user.id })
+  const category = await Category.findOne({ id: args.categoryId, userId: user.id })
 
   if (!category) {
     // raise and error that no category with the given id found.
   }
 
-  const resolvedDate = new Date(args.date)
+  const resolvedDate = new Date(args.dateSpentOn)
 
   const sess = await mongoose.startSession()
   sess.startTransaction()
 
   let month = await Month.findOne({
-    user: user.id,
+    userId: user.id,
     monthNum: resolvedDate.getMonth(),
     year: resolvedDate.getFullYear()
   })
@@ -42,19 +42,20 @@ const addExpense = async (parent, args, context) => {
     month = new Month({
       monthNum: resolvedDate.getMonth(),
       year: resolvedDate.getFullYear(),
-      budgetPlan: user.currentBudgetPlan,
-      user: user
+      budgetPlanId: user.currentBudgetPlanId,
+      userId: user
     })
     await month.save({ session: sess })
   }
 
   const newExpense = new Expense({
-    date: args.date,
     amount: args.amount,
-    spentOn: args.spentOn || "",
-    category: category,
-    month: month,
-    user: user,
+    dateSpentOn: args.dateSpentOn,
+    spentFor: args.spentFor || "",
+    type: args.type,
+    categoryId: category,
+    monthId: month,
+    userId: user,
   })
 
 
@@ -69,33 +70,39 @@ const updateExpense = async (parent, args, context) => {
 
   const user = await User.findById(context.user.id)
 
-  let expense = await Expense.findOne({ id: args.id, user: context.user.id })
+  let expense = await Expense.findOne({ id: args.id, userId: context.user.id }).populate("monthId")
 
   const sess = await mongoose.startSession()
   sess.startTransaction()
 
-  if (args.date) {
-    const resolvedDate = new Date(args.date)
+  if (args.dateSpentOn) {
+    const resolvedDate = new Date(args.dateSpentOn)
 
-    if (expense.monthNum !== resolvedDate.getMonth() || expense.year !== resolvedDate.getFullYear()) {
+    if (expense.monthId.monthNum !== resolvedDate.getMonth() || expense.monthId.year !== resolvedDate.getFullYear()) {
 
-      const newMonth = await Month.findOne({
+      const changedMonth = await Month.findOne({
         monthNum: resolvedDate.getMonth(),
-        year: resolvedDate.getFullYear()
+        year: resolvedDate.getFullYear(),
+        userId: user.id
       })
 
-      if (newMonth) {
-        expense.month = newMonth
+      if (changedMonth) {
+        expense.monthId = changedMonth
       }
       else {
-        const m = new Month({
+
+        if(!user.currentBudgetPlanId) {
+          // raise an error to set user a currentBudgetPlan
+        }
+
+        const newMonth = new Month({
           monthNum: resolvedDate.getMonth(),
           year: resolvedDate.getFullYear(),
-          budgetPlan: user.currentBudgetPlan
+          budgetPlanId: user.currentBudgetPlanId
         })
 
-        await m.save({ session: sess })
-        expense.month = m
+        await newMonth.save({ session: sess })
+        expense.monthId = newMonth
       }
     }
   }
@@ -104,8 +111,8 @@ const updateExpense = async (parent, args, context) => {
     expense.amount = args.amount
   }
 
-  if (args.spentOn) {
-    expense.spentOn = args.spentOn
+  if (args.spentFor) {
+    expense.spentFor = args.spentFor
   }
 
   await expense.save({ session: sess })

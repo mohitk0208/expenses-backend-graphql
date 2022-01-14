@@ -15,7 +15,7 @@ const RootMutationType = new GraphQLObjectType({
       type: UserType,
       description: "update user profile.",
       args: {
-        currentBudgetPlan: { type: GraphQLString }
+        newCurrentBudgetPlanId: { type: GraphQLString }
       },
       resolve: userResolvers.updateUser
     },
@@ -25,6 +25,7 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         name: { type: GraphQLNonNull(GraphQLString) },
         backgroundUrl: { type: GraphQLString },
+        description: { type: GraphQLString },
       },
       resolve: categoryResolvers.addCategory
     },
@@ -34,7 +35,8 @@ const RootMutationType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLString },
-        backgroundUrl: { type: GraphQLString }
+        backgroundUrl: { type: GraphQLString },
+        description: { type: GraphQLString },
       },
       resolve: categoryResolvers.updateCategory
     },
@@ -42,8 +44,8 @@ const RootMutationType = new GraphQLObjectType({
       type: BudgetPlanType,
       description: "add a new Budget Plan for the user sending the request.",
       args: {
-        perDayAmount: { type: GraphQLNonNull(GraphQLFloat) },
-        monthBudget: { type: GraphQLNonNull(GraphQLFloat) }
+        perMonthAmount: { type: GraphQLNonNull(GraphQLFloat) },
+        perDayAmount: { type: GraphQLNonNull(GraphQLFloat) }
       },
       resolve: budgetPlanResolvers.addBudgetPlan
     },
@@ -52,8 +54,8 @@ const RootMutationType = new GraphQLObjectType({
       description: "change the monthBudget and perDayAmount of a budget plan.",
       args: {
         id: { type: GraphQLNonNull(GraphQLString) },
-        perDayAmount: { type: GraphQLFloat },
-        monthBudget: { type: GraphQLFloat }
+        perMonthAmount: { type: GraphQLFloat },
+        perDayAmount: { type: GraphQLFloat }
       },
       resolve: budgetPlanResolvers.updateBudgetPlan
     },
@@ -62,10 +64,11 @@ const RootMutationType = new GraphQLObjectType({
       type: ExpenseType,
       description: "add a new expense",
       args: {
-        date: { type: GraphQLNonNull(GraphQLString) },
         amount: { type: GraphQLNonNull(GraphQLFloat) },
-        spentOn: { type: GraphQLString },
-        category: { type: GraphQLNonNull(GraphQLString) }
+        dateSpentOn: { type: GraphQLNonNull(GraphQLString) },
+        spentFor: { type: GraphQLString },
+        type: { type: GraphQLNonNull(GraphQLString) },
+        categoryId: { type: GraphQLNonNull(GraphQLString) }
       },
       resolve: expenseResolvers.addExpense
     },
@@ -74,9 +77,10 @@ const RootMutationType = new GraphQLObjectType({
       description: "update the details of a expense",
       args: {
         id: { type: GraphQLNonNull(GraphQLString) },
-        date: { type: GraphQLString },
         amount: { type: GraphQLFloat },
-        spentOn: { type: GraphQLString },
+        dateSpentOn: { type: GraphQLString },
+        spentFor: { type: GraphQLString },
+        type: { type: GraphQLString },
         // TODO
         // add functionality to change category
       },
