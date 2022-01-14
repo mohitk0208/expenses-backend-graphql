@@ -3,10 +3,10 @@ const mongoose = require("mongoose")
 const Category = require("../models/category")
 const User = require("../models/user")
 
-const category = async (parent, args, context) => await Category.findOne({ id: args.id, user: context.user.id })
+const category = async (parent, args, context) => await Category.findOne({ id: args.id, userId: context.user.id })
 
 
-const categories = async (parent, args, context) => await Category.find({ user: context.user.id })
+const categories = async (parent, args, context) => await Category.find({ userId: context.user.id })
 
 
 

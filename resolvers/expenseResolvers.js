@@ -7,10 +7,10 @@ const Month = require("../models/Month")
 
 
 
-const expense = async (parent, args, context) => await Expense.findOne({ id: args.id, user: context.user.id })
+const expense = async (parent, args, context) => await Expense.findOne({ id: args.id, userId: context.user.id })
 
 
-const expenses = async (parent, args, context) => await Expense.find({ user: context.user.id })
+const expenses = async (parent, args, context) => await Expense.find({ userId: context.user.id })
 
 
 const addExpense = async (parent, args, context) => {

@@ -5,16 +5,11 @@ const user = require("../models/user")
 const User = require("../models/user")
 
 
-const budgetPlan = async (parent, args, context) => {
-  const b = await BudgetPlan.findById(args.id)
-  // TODO
-  // add check to validate if the budget plan belongs to the user sending the request
-  return b
-}
+const budgetPlan = async (parent, args, context) => await BudgetPlan.findOne({ id: args.id, userId: context.user.id })
 
 
 
-const budgetPlans = async (parent, args, context) => await BudgetPlan.find({ user: context.user.id })
+const budgetPlans = async (parent, args, context) => await BudgetPlan.find({ userId: context.user.id })
 
 
 const addBudgetPlan = async (parent, args, context) => {

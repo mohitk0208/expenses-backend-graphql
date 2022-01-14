@@ -13,9 +13,6 @@ const RootQueryType = new GraphQLObjectType({
     user: {
       type: UserType,
       description: "a single user",
-      args: {
-        // id: { type: GraphQLNonNull(GraphQLString) }
-      },
       resolve: userResolvers.user
     },
     category: {
@@ -29,7 +26,6 @@ const RootQueryType = new GraphQLObjectType({
     categories: {
       type: GraphQLList(CategoryType),
       description: "list of all the categories of the user sending the request.",
-      args: {},
       resolve: categoryResolvers.categories
 
     },
