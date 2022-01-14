@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat, GraphQLEnumType, GraphQLUnionType } = require("graphql")
 
 const Category = require("../models/category")
 const Month = require("../models/Month")
@@ -9,9 +9,15 @@ const ExpenseType = new GraphQLObjectType({
   description: "a expense object that represents that some money is spent on something.",
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLString) },
-    date: { type: GraphQLNonNull(GraphQLString) },
     amount: { type: GraphQLNonNull(GraphQLFloat) },
-    spentOn: {type: GraphQLString},
+    dateSpentOn: { type: GraphQLNonNull(GraphQLString) },
+    spentFor: { type: GraphQLString },
+    monthId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.month },
+    type: { type: GraphQLNonNull(GraphQLString) },
+    createdAt: { type: GraphQLNonNull(GraphQLString) },
+    updatedAt: { type: GraphQLNonNull(GraphQLString) },
+    userId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.user },
+    categoryId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.category },
     category: {
       type: CategoryType,
       resolve: async (expense) => await Category.findById(expense.category)

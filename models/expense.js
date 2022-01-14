@@ -1,12 +1,18 @@
 const mongoose = require("mongoose")
 
 const expenseSchema = new mongoose.Schema({
-  date: { type: Date, required: true },
   amount: { type: Number, required: true },
-  spentOn: { type: String },
-  category: { type: mongoose.Types.ObjectId, required: true, ref: "Category" },
+  dateSpentOn: { type: Date, required: true },
+  spentFor: { type: String },
   month: { type: mongoose.Types.ObjectId, required: true, ref: "Month" },
-  user: { type: mongoose.Types.ObjectId, required: true, ref: "User" }
+  type: {
+    type: String,
+    enum: ["forMonth", "regular"]
+  },
+  user: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+  category: { type: mongoose.Types.ObjectId, required: true, ref: "Category" }
+}, {
+  timestamps: true
 })
 
 module.exports = mongoose.model("Expense", expenseSchema)
