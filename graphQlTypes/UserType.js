@@ -13,30 +13,30 @@ const UserType = new GraphQLObjectType({
     firstName: { type: GraphQLNonNull(GraphQLString) },
     lastName: { type: GraphQLString },
     photoUrl: { type: GraphQLString },
-    createdOn: { type: GraphQLNonNull(GraphQLString) },
-    modifiedOn: { type: GraphQLNonNull(GraphQLString) },
-    currentBudgetPlanId: { type: GraphQLString, resolve: (user) => user.currentBudgetPlan },
+    createdAt: { type: GraphQLNonNull(GraphQLString) },
+    updatedAt: { type: GraphQLNonNull(GraphQLString) },
+    currentBudgetPlanId: { type: GraphQLString },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (user) => await Expense.find({user: user.id})
+      resolve: async (user) => await Expense.find({userId: user.id})
     },
     categories: {
       type: GraphQLList(CategoryType),
-      resolve: async (user) => await Category.find({ user: user.id })
+      resolve: async (user) => await Category.find({ userId: user.id })
     },
     budgetPlans: {
       type: GraphQLList(BudgetPlanType),
-      resolve: async (user) => await BudgetPlan.find({ user: user.id })
+      resolve: async (user) => await BudgetPlan.find({ userId: user.id })
     },
     months: {
       type: GraphQLList(MonthType),
-      resolve: async (user) => await Month.find({ user: user.id })
+      resolve: async (user) => await Month.find({ userId: user.id })
     },
     currentBudgetPlan: {
       type: BudgetPlanType,
       resolve: async (user) => await BudgetPlan.findOne({
-        currentBudgetPlan: user.currentBudgetPlan,
-        user: user.id
+        currentBudgetPlan: user.currentBudgetPlanId,
+        userId: user.id
       })
     }
   })
@@ -49,4 +49,4 @@ module.exports = UserType
 const CategoryType = require("./CategoryType")
 const BudgetPlanType = require("./BudgetPlanType");
 const ExpenseType = require("./ExpenseType");
-const onthType = require("./MonthType");
+const MonthType = require("./MonthType");

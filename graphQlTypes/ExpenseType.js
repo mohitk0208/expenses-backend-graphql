@@ -12,12 +12,12 @@ const ExpenseType = new GraphQLObjectType({
     amount: { type: GraphQLNonNull(GraphQLFloat) },
     dateSpentOn: { type: GraphQLNonNull(GraphQLString) },
     spentFor: { type: GraphQLString },
-    monthId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.month },
+    monthId: { type: GraphQLNonNull(GraphQLString)},
     type: { type: GraphQLNonNull(GraphQLString) },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLNonNull(GraphQLString) },
-    userId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.user },
-    categoryId: { type: GraphQLNonNull(GraphQLString), resolve: (expense) => expense.category },
+    userId: { type: GraphQLNonNull(GraphQLString)},
+    categoryId: { type: GraphQLNonNull(GraphQLString)},
     category: {
       type: CategoryType,
       resolve: async (expense) => await Category.findById(expense.category)

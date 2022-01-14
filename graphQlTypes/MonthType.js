@@ -11,21 +11,21 @@ const MonthType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     monthNum: { type: GraphQLNonNull(GraphQLInt) },
     year: { type: GraphQLNonNull(GraphQLInt) },
-    budgetPlanId: { type: GraphQLNonNull(GraphQLString), resolve: (month) => month.budgetPlan },
+    budgetPlanId: { type: GraphQLNonNull(GraphQLString) },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLNonNull(GraphQLString) },
-    userId: {type: GraphQLNonNull(GraphQLString), resolve: (month) => month.user},
+    userId: {type: GraphQLNonNull(GraphQLString)},
     budgetPlan: {
       type: BudgetPlanType,
-      resolve: async (month) => await BudgetPlan.findById(month.budgetPlan)
+      resolve: async (month) => await BudgetPlan.findById(month.budgetPlanId)
     },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (month) => await Expense.find({ month: month.id })
+      resolve: async (month) => await Expense.find({ monthId: month.id })
     },
     user: {
       type: UserType,
-      resolve: async (month) => await User.findById(month.user)
+      resolve: async (month) => await User.findById(month.userId)
     }
   })
 })

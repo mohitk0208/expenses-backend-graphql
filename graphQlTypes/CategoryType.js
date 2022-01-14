@@ -13,14 +13,14 @@ const CategoryType = new GraphQLObjectType({
     description: {type: GraphQLString},
     createdOn: { type: GraphQLNonNull(GraphQLString) },
     modifiedOn: { type: GraphQLNonNull(GraphQLString) },
-    userId: { type: GraphQLNonNull(GraphQLString), resolve: (category) => category.user },
+    userId: { type: GraphQLNonNull(GraphQLString)},
     user: {
       type: UserType,
-      resolve: async (category) => await User.findById(category.user)
+      resolve: async (category) => await User.findById(category.userId)
     },
     expenses: {
       type: GraphQLList(ExpenseType),
-      resolve: async (category) => await Expense.find({ category: category.id })
+      resolve: async (category) => await Expense.find({ categoryId: category.id })
     }
 
   })

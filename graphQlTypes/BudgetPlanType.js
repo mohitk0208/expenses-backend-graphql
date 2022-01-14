@@ -8,13 +8,13 @@ const BudgetPlanType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLString) },
     perDayAmount: { type: GraphQLNonNull(GraphQLFloat) },
-    monthBudget: { type: GraphQLNonNull(GraphQLFloat) },
+    perMonthAmount: { type: GraphQLNonNull(GraphQLFloat) },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLNonNull(GraphQLString) },
-    userId: { type: GraphQLNonNull(GraphQLString), resolve: (budgetPlan) => budgetPlan.user },
+    userId: { type: GraphQLNonNull(GraphQLString)},
     user: {
       type: UserType,
-      resolve: async (budgetPlan) => await User.findById(budgetPlan.user)
+      resolve: async (budgetPlan) => await User.findById(budgetPlan.userId)
     }
   })
 })
