@@ -11,8 +11,8 @@ const CategoryType = new GraphQLObjectType({
     name: {type: GraphQLNonNull(GraphQLString)},
     backgroundUrl: { type: GraphQLString },
     description: {type: GraphQLString},
-    createdOn: { type: GraphQLNonNull(GraphQLString) },
-    modifiedOn: { type: GraphQLNonNull(GraphQLString) },
+    createdAt: { type: GraphQLNonNull(GraphQLString) },
+    updatedAt: { type: GraphQLNonNull(GraphQLString) },
     userId: { type: GraphQLNonNull(GraphQLString)},
     user: {
       type: UserType,
