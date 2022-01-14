@@ -20,18 +20,18 @@ const app = express()
 app.use(express.json())
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 
 app.use(
   session({
     secret: process.env.EXPRESS_SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-    cookie: {
-      sameSite: "none",
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
-    }
+    // cookie: {
+    //   sameSite: "none",
+    //   secure: true,
+    //   maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+    // }
   })
 )
 
@@ -95,7 +95,7 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'http://localhost:3000', failureMessage: true, session: true }),
   function (req, res) {
-    res.redirect('/graphql');
+    res.redirect('http://localhost:3000/login');
   }
 );
 
@@ -113,6 +113,7 @@ app.get("/getuser", (req, res) => {
 
 app.get("/auth/logout", (req, res) => {
   if (req.user) {
+    console.log("request received")
     req.logout()
     res.status(200).json({
       msg: "logout successful"
