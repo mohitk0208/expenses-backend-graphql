@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat, GraphQLEnumType, GraphQLUnionType } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat } = require("graphql")
 
 const Category = require("../models/category")
 const Month = require("../models/month")
@@ -24,7 +24,7 @@ const ExpenseType = new GraphQLObjectType({
     },
     month: {
       type: MonthType,
-      resolve: async (expense) => await Month.findById(expense.month)
+      resolve: async (expense) => await Month.findById(expense.monthId)
     },
     user: {
       type: UserType,
