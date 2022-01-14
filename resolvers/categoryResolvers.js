@@ -16,7 +16,7 @@ const addCategory = async (parent, args, context) => {
     name: args.name,
     backgroundUrl: args.backgroundUrl,
     description: args.description,
-    userId: user,
+    userId: user.id,
   })
 
   await newCategory.save()

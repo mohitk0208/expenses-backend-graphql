@@ -43,7 +43,7 @@ const addExpense = async (parent, args, context) => {
       monthNum: resolvedDate.getMonth(),
       year: resolvedDate.getFullYear(),
       budgetPlanId: user.currentBudgetPlanId,
-      userId: user
+      userId: user.id
     })
     await month.save({ session: sess })
   }
@@ -53,9 +53,9 @@ const addExpense = async (parent, args, context) => {
     dateSpentOn: args.dateSpentOn,
     spentFor: args.spentFor || "",
     type: args.type,
-    categoryId: category,
-    monthId: month,
-    userId: user,
+    categoryId: category.id,
+    monthId: month.id,
+    userId: user.id,
   })
 
 
@@ -87,7 +87,7 @@ const updateExpense = async (parent, args, context) => {
       })
 
       if (changedMonth) {
-        expense.monthId = changedMonth
+        expense.monthId = changedMonth.id
       }
       else {
 
@@ -98,11 +98,12 @@ const updateExpense = async (parent, args, context) => {
         const newMonth = new Month({
           monthNum: resolvedDate.getMonth(),
           year: resolvedDate.getFullYear(),
-          budgetPlanId: user.currentBudgetPlanId
+          budgetPlanId: user.currentBudgetPlanId,
+          userId: user.id
         })
 
         await newMonth.save({ session: sess })
-        expense.monthId = newMonth
+        expense.monthId = newMonth.id
       }
     }
   }
