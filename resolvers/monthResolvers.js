@@ -1,4 +1,4 @@
-const Month = require("../models/Month")
+const Month = require("../models/month")
 
 
 const month = async (parent, args, context) => await Month.findOne({ id: args.id, userId: context.user.id })

@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const Expense = require("../models/expense")
 const User = require("../models/user")
 const Category = require("../models/category")
-const Month = require("../models/Month")
+const Month = require("../models/month")
 
 
 

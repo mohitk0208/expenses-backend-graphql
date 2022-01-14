@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLFloat, GraphQLEnumType, GraphQLUnionType } = require("graphql")
 
 const Category = require("../models/category")
-const Month = require("../models/Month")
+const Month = require("../models/month")
 const User = require("../models/user")
 
 const ExpenseType = new GraphQLObjectType({

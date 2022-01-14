@@ -3,6 +3,7 @@ const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } = requir
 const Category = require("../models/category")
 const BudgetPlan = require("../models/budgetPlan")
 const Expense = require("../models/expense")
+const Month = require("../models/month")
 
 const UserType = new GraphQLObjectType({
   name: "User",
