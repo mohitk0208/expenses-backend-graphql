@@ -10,7 +10,10 @@ const CategoryType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     name: {type: GraphQLNonNull(GraphQLString)},
     backgroundUrl: { type: GraphQLString },
-    // add userId field to get only the userId
+    description: {type: GraphQLString},
+    createdOn: { type: GraphQLNonNull(GraphQLString) },
+    modifiedOn: { type: GraphQLNonNull(GraphQLString) },
+    userId: { type: GraphQLNonNull(GraphQLString), resolve: (category) => category.user },
     user: {
       type: UserType,
       resolve: async (category) => await User.findById(category.user)
