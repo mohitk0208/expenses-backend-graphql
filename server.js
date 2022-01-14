@@ -56,12 +56,6 @@ passport.use(new GoogleStrategy({
   callbackURL: "/auth/google/callback"
 },
   function (accessToken, refreshToken, profile, cb) {
-    // find the user in the database
-    // if found
-    // then return the database user object in the `cb`
-    // else
-    // create a user in the database and then return the created user
-    console.log(profile)
     User.findOne({ googleId: profile.id }, async (err, doc) => {
       if (err) {
         return cb(err, null)

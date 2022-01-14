@@ -1,7 +1,4 @@
-const mongoose = require("mongoose")
-
 const BudgetPlan = require("../models/budgetPlan")
-const user = require("../models/user")
 const User = require("../models/user")
 
 
@@ -18,7 +15,7 @@ const addBudgetPlan = async (parent, args, context) => {
   const newBudgetPlan = new BudgetPlan({
     perMonthAmount: args.perMonthAmount,
     perDayAmount: args.perDayAmount,
-    userId: user
+    userId: user.id
   })
 
   await newBudgetPlan.save()
