@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String },
   photoUrl: { type: String },
-  createdAt: { type: mongoose.Schema.Types.Date, default: Date.now() },
+  createdOn: { type: mongoose.Schema.Types.Date, default: Date.now() },
+  modifiedOn: { type: mongoose.Schema.Types.Date, default: Date.now() },
   currentBudgetPlan: { type: mongoose.Types.ObjectId, ref: "BudgetPlan" }
 })
 
