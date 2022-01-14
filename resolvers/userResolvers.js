@@ -10,7 +10,11 @@ const updateUser = async (parent, args, context) => {
 
   const newCurrentBudgetPlan = await BudgetPlan.findOne({ userId: user.id, id: args.newCurrentBudgetPlanId })
 
-  user.currentBudgetPlanId = newCurrentBudgetPlan
+  if(!newCurrentBudgetPlan) {
+    //TODO
+    // throw new Error("Budget plan not found")
+  }
+  user.currentBudgetPlanId = newCurrentBudgetPlan.id
   await user.save()
 
   return user
