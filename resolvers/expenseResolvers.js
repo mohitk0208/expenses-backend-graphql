@@ -7,7 +7,7 @@ const Month = require("../models/month")
 
 
 
-const expense = async (parent, args, context) => await Expense.findOne({ id: args.id, userId: context.user.id })
+const expense = async (parent, args, context) => await Expense.findOne({ _id: args.id, userId: context.user.id })
 
 
 const expenses = async (parent, args, context) => await Expense.find({ userId: context.user.id })
@@ -16,7 +16,7 @@ const expenses = async (parent, args, context) => await Expense.find({ userId: c
 const addExpense = async (parent, args, context) => {
   const user = await User.findById(context.user.id)
 
-  const category = await Category.findOne({ id: args.categoryId, userId: user.id })
+  const category = await Category.findOne({ _id: args.categoryId, userId: user.id })
 
   if (!category) {
     // raise and error that no category with the given id found.

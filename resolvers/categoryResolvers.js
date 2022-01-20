@@ -1,7 +1,15 @@
 const Category = require("../models/category")
 const User = require("../models/user")
 
-const category = async (parent, args, context) => await Category.findOne({ id: args.id, userId: context.user.id })
+const category = async (parent, args, context) => {
+
+  console.log("args", args)
+  const category = await Category.findOne({ _id: args.id, userId: context.user.id })
+
+  console.log("category", category)
+
+  return category
+}
 
 
 const categories = async (parent, args, context) => await Category.find({ userId: context.user.id })
@@ -29,7 +37,7 @@ const addCategory = async (parent, args, context) => {
 
 const updateCategory = async (parent, args, context) => {
 
-  let category = await Category.findOne({ id: args.id, userId: context.user.id })
+  let category = await Category.findOne({ _id: args.id, userId: context.user.id })
 
   if (!category) {
     // TODO
