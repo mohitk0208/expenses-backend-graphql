@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } = require("graphql")
+const { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require("graphql")
 
 const userResolvers = require("../resolvers/userResolvers")
 const categoryResolvers = require("../resolvers/categoryResolvers")
@@ -50,25 +50,34 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: monthResolvers.month
     },
-    months: {
-      type: GraphQLList(MonthType),
-      description: "a list of all the months of the user.",
-      resolve: monthResolvers.months
-    },
-    expense: {
-      type: ExpenseType,
-      description: "a single expense object",
+    monthByMonthNumAndYear: {
+      type: MonthType,
+      description: "a single month object but by month num and year.",
       args: {
-        id: { type: GraphQLNonNull(GraphQLString) }
+        monthNum: { type: GraphQLNonNull(GraphQLInt) },
+        year: { type: GraphQLNonNull(GraphQLInt) }
       },
-      resolve: expenseResolvers.expense
+      resolve: monthResolvers.monthByMonthNumAndYear
     },
-    expenses: {
-      type: GraphQLList(ExpenseType),
-      description: "list of all the expenses of the user.",
-      resolve: expenseResolvers.expenses
-    }
-  })
+    months: {
+        type: GraphQLList(MonthType),
+        description: "a list of all the months of the user.",
+        resolve: monthResolvers.months
+      },
+      expense: {
+        type: ExpenseType,
+        description: "a single expense object",
+        args: {
+          id: { type: GraphQLNonNull(GraphQLString) }
+        },
+        resolve: expenseResolvers.expense
+      },
+      expenses: {
+        type: GraphQLList(ExpenseType),
+        description: "list of all the expenses of the user.",
+        resolve: expenseResolvers.expenses
+      }
+    })
 })
 
 
