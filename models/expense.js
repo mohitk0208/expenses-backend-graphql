@@ -7,7 +7,7 @@ const expenseSchema = new mongoose.Schema({
   monthId: { type: mongoose.Types.ObjectId, required: true, ref: "Month" },
   type: {
     type: String,
-    enum: ["forMonth", "regular"]
+    enum: ["forMonth", "regular", "other"]
   },
   userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   categoryId: { type: mongoose.Types.ObjectId, required: true, ref: "Category" }
